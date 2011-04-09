@@ -1,0 +1,32 @@
+Sub DeleteBlankRowsAndColumns()
+
+	'A1 hücresinden dolu olan son hücreye kadar olan alaný seç
+	Range("A1").Select
+	Range(Selection, ActiveCell.SpecialCells(xlLastCell)).Select
+
+	Dim i As Long
+
+	With Application
+	.Calculation = xlCalculationManual
+	.ScreenUpdating = False
+
+	'Tüm Satýrlarda CountA(hücrenin içi dolu mu?)
+	'fonksiyonu 0 döndürüyorsa sil
+	For i = Selection.Rows.Count To 1 Step -1
+	If WorksheetFunction.CountA(Selection.Rows(i)) = 0 Then
+	Selection.Rows(i).EntireRow.Delete
+	End If
+	Next i
+
+	'Tüm Sütunlarda CountA fonksiyonu 0 döndürüyorsa sil
+	For i = Selection.Columns.Count To 1 Step -1
+	If WorksheetFunction.CountA(Selection.Columns(i)) = 0 Then
+	Selection.Columns(i).EntireColumn.Delete
+	End If
+	Next i
+
+	.Calculation = xlCalculationAutomatic
+	.ScreenUpdating = True
+	End With
+
+End Sub
