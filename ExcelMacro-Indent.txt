@@ -1,0 +1,86 @@
+Sub Indent()
+'
+' Indent Macro
+'
+
+' Parent Must Start With A1 Cell
+' Child Must Start With B1 Cell
+
+    Application.ScreenUpdating = False
+
+    Dim EmptyColumn As Integer
+    Dim VlookupKey As Integer
+    Dim VlookupTable As Integer
+    
+    '250 is probably empty :)
+    EmptyColumn = 250
+    
+    VlookupKey = EmptyColumn - 2
+    VlookupTable = EmptyColumn - 1
+    WorkingColumn = EmptyColumn - 1
+    
+    Cells.Select
+    Selection.ClearFormats
+    
+    Range("A1").Select
+    Range(Selection, Selection.End(xlDown)).Select
+    
+    Dim myRowCount As Integer
+    myRowCount = Selection.Rows.Count
+    
+    Dim dict As Dictionary
+    Set dict = New Dictionary
+    
+    dict.Add Range("A2").Value, 1
+    
+    For rwNumber = 2 To myRowCount
+    
+        If dict.Exists(ActiveSheet.Cells(rwNumber, 1).Value) Then
+        
+            ActiveSheet.Cells(rwNumber, 2).InsertIndent dict.Item(ActiveSheet.Cells(rwNumber, 1).Value)
+                    
+            dict.Add ActiveSheet.Cells(rwNumber, 2).Value, dict.Item(ActiveSheet.Cells(rwNumber, 1).Value) + 1
+            
+            ActiveSheet.Cells(rwNumber, WorkingColumn).Value = dict.Item(ActiveSheet.Cells(rwNumber, 1).Value)
+            
+        Else
+            ActiveSheet.Cells(rwNumber, 2).Select
+            MsgBox ActiveSheet.Cells(rwNumber, 2).Value & " Hatalý Durumda"
+        End If
+    
+    Next rwNumber
+        
+    'Coloring
+    For rwNumber = 2 To myRowCount
+        
+        ActiveSheet.Cells(rwNumber, EmptyColumn).FormulaR1C1 = "=ISERROR(VLOOKUP(RC[-" & VlookupKey & "],c[-" & VlookupTable & "],1,0))"
+    
+        If ActiveSheet.Cells(rwNumber, EmptyColumn).Value = True Then
+    
+            ActiveSheet.Cells(rwNumber, 2).Font.Bold = True
+            ActiveSheet.Cells(rwNumber, 2).Select
+            With Selection.Interior
+                .Pattern = xlSolid
+                .PatternColorIndex = xlAutomatic
+                .ThemeColor = xlThemeColorAccent6
+                .TintAndShade = 0.599993896298105
+                .PatternTintAndShade = 0
+            End With
+    
+        End If
+    
+    Next rwNumber
+    
+    Columns(WorkingColumn).Select
+    Selection.ClearContents
+    
+    Columns(EmptyColumn).Select
+    Selection.ClearContents
+    
+    Range("A1").Select
+    Range(Selection, Selection.End(xlToRight)).Select
+    Selection.Font.Bold = True
+    
+    Range("A1").Select
+    
+End Sub

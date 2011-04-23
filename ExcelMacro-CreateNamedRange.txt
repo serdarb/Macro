@@ -1,0 +1,16 @@
+Sub CreateNamedRange(rangeName As String, rangeStart As String, columnCount As String)
+
+    For Each n In ActiveWorkbook.Names
+        If n.Name = rangeName Then
+            ActiveWorkbook.Names(rangeName).Delete
+        End If
+    Next n
+
+    Range(rangeStart).Select
+    Range(Selection, Selection.End(xlDown)).Select
+    
+    myRowCount = Selection.Rows.Count - 1
+    
+    ActiveWorkbook.Names.Add Name:=rangeName, RefersTo:=ActiveSheet.Range(Range(rangeStart), Range(rangeStart).Offset(myRowCount, columnCount - 1))
+        
+End Sub

@@ -1,0 +1,30 @@
+Private Sub UserForm_Initialize()
+'Hierarchical TreeView 
+
+On Error GoTo ErrorHandler
+
+    Range("A1").Select
+    Range(Selection, Selection.End(xlDown)).Select
+    
+    Dim myRowCount As Integer
+    myRowCount = Selection.Rows.Count
+    
+    'first line is for titles
+    TreeView1.Nodes.Add , , Range("A2").Value, Range("A2").Value
+    
+    For rwNumber = 2 To myRowCount
+        
+            TreeView1.Nodes.Add ActiveSheet.Cells(rwNumber, 1).Value, tvwChild, ActiveSheet.Cells(rwNumber, 2).Value, ActiveSheet.Cells(rwNumber, 2).Value
+    
+    Next rwNumber
+    
+    Range("A1").Select
+    
+    Exit Sub
+    
+ErrorHandler:
+    MsgBox ActiveSheet.Cells(rwNumber, 2).Value
+
+    ActiveSheet.Cells(rwNumber, 1).Select
+    
+End Sub

@@ -15,12 +15,6 @@
 			End If
 		Next i
 		
-		For i = Selection.Columns.Count To 1 Step -1
-			If WorksheetFunction.CountA(Selection.Columns(i)) = 0 Then
-				Selection.Columns(i).EntireColumn.Delete
-			End If
-		Next i
-
 		.Calculation = xlCalculationAutomatic
 		.ScreenUpdating = True
 	End With

@@ -1,0 +1,13 @@
+Sub RunSql(mySql As String)
+
+    Dim cnn As ADODB.Connection
+    Set cnn = New ADODB.Connection
+   
+    Dim rs As ADODB.Recordset
+    
+    cnn.ConnectionString = "driver={SQL Server};Server=.;User ID=sa;Password=password;Database=MyDB"
+    cnn.Open
+    Set rs = cnn.Execute(mySql)
+    Set cnn = Nothing
+
+End Sub

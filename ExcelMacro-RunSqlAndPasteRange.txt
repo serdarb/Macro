@@ -1,0 +1,25 @@
+Sub RunSqlAndPasteToRange(mySql As String, myRange As String)
+
+    Dim cnPubs As ADODB.Connection
+    Dim rsPubs As ADODB.Recordset
+    Dim strConn As String
+    
+    Set rsPubs = New ADODB.Recordset
+    Set cnPubs = New ADODB.Connection
+    
+    strConn = "PROVIDER=SQLOLEDB;DATA SOURCE=.;INITIAL CATALOG=Database;Password=password;Persist Security Info=True;User ID=sa;"
+    
+    cnPubs.Open strConn
+    
+    With rsPubs
+        .ActiveConnection = cnPubs
+        .Open mySql
+        ActiveSheet.Range(myRange).CopyFromRecordset rsPubs
+        .Close
+    End With
+    
+    cnPubs.Close
+    Set rsPubs = Nothing
+    Set cnPubs = Nothing
+
+End Sub

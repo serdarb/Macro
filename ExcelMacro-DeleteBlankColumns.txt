@@ -1,4 +1,4 @@
-﻿Sub DeleteBlankRowsAndColumns()
+﻿Sub DeleteBlankColumns()
 	
 	Range("A1").Select
 	Range(Selection, ActiveCell.SpecialCells(xlLastCell)).Select
@@ -8,12 +8,6 @@
 	With Application
 		.Calculation = xlCalculationManual
 		.ScreenUpdating = False
-
-		For i = Selection.Rows.Count To 1 Step -1
-			If WorksheetFunction.CountA(Selection.Rows(i)) = 0 Then
-				Selection.Rows(i).EntireRow.Delete
-			End If
-		Next i
 		
 		For i = Selection.Columns.Count To 1 Step -1
 			If WorksheetFunction.CountA(Selection.Columns(i)) = 0 Then
