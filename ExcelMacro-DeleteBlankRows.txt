@@ -1,4 +1,4 @@
-﻿Sub DeleteBlankRowsAndColumns()
+﻿Sub DeleteBlankRows()
 	
 	Range("A1").Select
 	Range(Selection, ActiveCell.SpecialCells(xlLastCell)).Select
